@@ -20,6 +20,16 @@ namespace First
             this.AddUriPathExtensionMapping(".wav","audio/x-wav");
         }
 
+        protected override bool OnCanReadType(Type type)
+        {
+            return false;
+        }
+
+        protected override bool OnCanWriteType(Type type)
+        {
+            return type == typeof (string);
+        }
+
         
         public override object OnReadFromStream(Type type, Stream stream, HttpContentHeaders contentHeaders)
         {

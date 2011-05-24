@@ -17,7 +17,7 @@ namespace First
         public ImageFromTextFormatter()
         {
             SupportedMediaTypes.Add(new MediaTypeHeaderValue("image/jpeg"));
-            //this.AddMediaRangeMapping("*/*", "audio/x-wav");
+            //this.AddMediaRangeMapping("*/*", "image/jpeg");
             this.AddUriPathExtensionMapping(".jpeg", "image/jpeg");
         }
 

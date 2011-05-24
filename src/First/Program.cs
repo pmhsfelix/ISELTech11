@@ -32,9 +32,7 @@ namespace First
         {
             var cfg = HttpHostConfiguration.Create()
                 .AddMessageHandlers(typeof (SampleMessageHandler))
-                .SetOperationHandlerFactory(new MyFactory());
-                
-                
+                .SetOperationHandlerFactory(new MyOperationConfigurationFactory());
             
             using (var host = new HttpConfigurableServiceHost(typeof(TheService), cfg, new Uri("http://localhost:8080")))
             {
@@ -45,9 +43,8 @@ namespace First
         }
     }
 
-    internal class MyFactory : HttpOperationHandlerFactory
+    internal class MyOperationConfigurationFactory : HttpOperationHandlerFactory
     {
-        
         protected override Collection<HttpOperationHandler> OnCreateRequestHandlers(ServiceEndpoint endpoint, HttpOperationDescription operation)
         {
             var coll = base.OnCreateRequestHandlers(endpoint, operation);
@@ -59,10 +56,7 @@ namespace First
                 Formatters.Add(new WaveFromTextFormatter());
                 Formatters.Add(new ImageFromTextFormatter());
             }
-
-
             return coll;
         }
-        
     }
 }
