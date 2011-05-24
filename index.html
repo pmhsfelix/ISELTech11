@@ -104,7 +104,7 @@
     <style type="text/css" media="screen, projection">
         body {
           font: 14px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
-          background: #778;
+          background: #103;
           padding: 0;
           margin: 0;
           overflow: hidden;
@@ -141,10 +141,10 @@
           left: 50%;
           top: 50%;
           margin-top: -350px;
-          background: -webkit-gradient(linear, left bottom, left top, from(#bbd), to(#fff));
+          background: -webkit-gradient(linear, left bottom, left top, from(#eee), to(#fff));
           -webkit-transition: margin 0.25s ease-in-out;
           background-color: #eee;
-          background: -moz-linear-gradient(bottom, #bbd, #fff);
+          background: -moz-linear-gradient(bottom, #eee, #fff);
           -moz-transition: margin 0.25s ease-in-out;
           -o-transition: margin 0.25s ease-in-out;
           border-top-left-radius: 20px;
@@ -493,12 +493,21 @@
           <div class="slide">
               <div class="inner">
                   
+                  <header><h1>Pedro Félix, ISEL Tech 2011</h1></header>
+                  
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
                   <header><h1>Introduction</h1></header>
                   
                   
                       <section><ul>
 <li>Extension to the <em>Windows Communication Foundation</em></li>
-<li>Announced on the 2010 PDC<ul>
+<li>Announced at the 2010 PDC<ul>
 <li>Work in progress - currently in <em>Preview 4</em></li>
 <li>No final release date yet</li>
 </ul>
@@ -525,11 +534,39 @@
 <li>Usage of multiple media types</li>
 <li>Usage of multiple formats (e.g. XML, JSON)</li>
 <li>Multiple architectural styles (e.g. RPC and ReST) </li>
+<li>Consumption by multiple client devices  <br />
+</li>
 </ul>
 </li>
-<li><em>Base</em> for ReST style system<ul>
+<li>Base for ReST style system<ul>
 <li>Not "opinionated"</li>
 <li>No resource model <em>yet</em></li>
+</ul>
+</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Goals</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Testability<ul>
+<li>E.g. No need for <code>WebOperationContext.Current</code> </li>
+<li>E.g. Public constructors</li>
+</ul>
+</li>
+<li>Composability<ul>
+<li>IOC/DI friendly <br />
+</li>
+</ul>
+</li>
+<li>Simpler configuration model<ul>
+<li>Code based</li>
 </ul>
 </li>
 </ul></section>
@@ -566,7 +603,7 @@
                   
                       <section><ul>
 <li>Original WCF programming model<ul>
-<li>Based on the SOAP/WSDL model</li>
+<li>Based on the SOAP and WSDL models</li>
 <li>Transport independence</li>
 <li>HTTP is a transport <em>detail</em><br />
 </li>
@@ -575,9 +612,8 @@
 <li>Web API programming model<ul>
 <li>Based on the HTTP model <br />
 </li>
-<li>HTTP used as the <em>application level</em> protocol</li>
-<li>HTTP exposed in its "full glory"</li>
-<li>Adds on the original model</li>
+<li>HTTP used as the <em>application level</em> protocol </li>
+<li>Adds on the WCF original model</li>
 </ul>
 </li>
 </ul></section>
@@ -614,32 +650,6 @@
           <div class="slide">
               <div class="inner">
                   
-                  <header><h1>The Service Host</h1></header>
-                  
-                  
-                      <section><pre><div class="highlight"><pre style="line-height: 125%"><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">Program</span>
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2</span> {
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3</span>     <span style="color: #008000; font-weight: bold">static</span> <span style="color: #008000; font-weight: bold">void</span> <span style="color: #0000FF">Main</span>(<span style="color: #B00040">string</span>[] args)
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4</span>     {
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5</span>         <span style="color: #008000; font-weight: bold">using</span> (var host = <span style="color: #008000; font-weight: bold">new</span> HttpServiceHost(<span style="color: #008000; font-weight: bold">typeof</span>(TheService), 
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6</span>             <span style="color: #BA2121">&quot;http://localhost:8080&quot;</span>))
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7</span>         {
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8</span>             host.Open();
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9</span>             Console.WriteLine(<span style="color: #BA2121">&quot;Host opened at {0} , press any key to end&quot;</span>, 
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10</span>                 host.Description.Endpoints[<span style="color: #666666">0</span>].Address);
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11</span>             Console.ReadKey();
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12</span>         }
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13</span>     }
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14</span> }
-</pre></div>
-</pre></section>
-                  
-              </div>
-          </div>
-        
-          <div class="slide">
-              <div class="inner">
-                  
                   <header><h1>Programming Model</h1></header>
                   
                   
@@ -657,6 +667,22 @@
 </li>
 <li><em>Contract</em> is a legacy term</li>
 </ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>HTTP messages</h1></header>
+                  
+                  
+                      <section><ul>
+<li><em>Strongly typed</em> request and response messages  <br />
+</li>
+<li>With public constructors</li>
+</ul>
+<p><center><img src="http://pfelix.files.wordpress.com/2011/04/httpmessages.png" height="60%" /></center></p></section>
                   
               </div>
           </div>
@@ -700,10 +726,25 @@
           <div class="slide">
               <div class="inner">
                   
-                  <header><h1>HTTP messages</h1></header>
+                  <header><h1>The Service Host</h1></header>
                   
                   
-                      <section><p><center><img src="http://pfelix.files.wordpress.com/2011/04/httpmessages.png" height="80%" /></center></p></section>
+                      <section><pre><div class="highlight"><pre style="line-height: 125%"><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">Program</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2</span> {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3</span>     <span style="color: #008000; font-weight: bold">static</span> <span style="color: #008000; font-weight: bold">void</span> <span style="color: #0000FF">Main</span>(<span style="color: #B00040">string</span>[] args)
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4</span>     {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5</span>         <span style="color: #008000; font-weight: bold">using</span> (var host = <span style="color: #008000; font-weight: bold">new</span> HttpServiceHost(<span style="color: #008000; font-weight: bold">typeof</span>(TheService), 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6</span>             <span style="color: #BA2121">&quot;http://localhost:8080&quot;</span>))
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7</span>         {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8</span>             host.Open();
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9</span>             Console.WriteLine(<span style="color: #BA2121">&quot;Host opened at {0} , press any key to end&quot;</span>, 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10</span>                 host.Description.Endpoints[<span style="color: #666666">0</span>].Address);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11</span>             Console.ReadKey();
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12</span>         }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13</span>     }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14</span> }
+</pre></div>
+</pre></section>
                   
               </div>
           </div>
@@ -715,7 +756,10 @@
                   
                   
                       <section><ul>
-<li>Similar to the original WCF model</li>
+<li>Similar to the original WCF model<ul>
+<li>service hosts and factories</li>
+</ul>
+</li>
 <li>Self-hosting<ul>
 <li>New <code>HttpServiceHost</code></li>
 <li>New <code>HttpBinding</code></li>
@@ -740,7 +784,7 @@
 <span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2</span> {
 <span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3</span>     <span style="color: #008000; font-weight: bold">protected</span> <span style="color: #008000; font-weight: bold">void</span> <span style="color: #0000FF">Application_Start</span>(<span style="color: #B00040">object</span> sender, EventArgs e)
 <span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4</span>     {
-<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5</span>         RouteTable.Routes.MapServiceRoute&lt;TodoResource&gt;(<span style="color: #BA2121">&quot;todos&quot;</span>);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5</span>         RouteTable.Routes.MapServiceRoute&lt;TheService&gt;(<span style="color: #BA2121">&quot;base_path&quot;</span>);
 <span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6</span>     }
 <span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7</span> }
 </pre></div>
@@ -800,6 +844,15 @@
           <div class="slide">
               <div class="inner">
                   
+                  <header><h1>Demo: message handler</h1></header>
+                  
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
                   <header><h1>Operation Handlers</h1></header>
                   
                   
@@ -818,6 +871,129 @@
 <li>The final <em>bag</em> contents are usable by the operation</li>
 </ul>
 <p><center><img src="http://pfelix.files.wordpress.com/2011/04/operationhandlers.png" width="80%" /></center></p></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Demo: operation handler</h1></header>
+                  
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Formatters</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Operations can receive <code>HttpRequestMessage&lt;T&gt;</code> or a <em>content model</em></li>
+<li>Operations can return <code>`HttpRequestMessage&lt;T&gt;</code> or a <em>content model</em></li>
+<li><code>MediaTypeFormatter</code> - conversion between the HTTP body and the <em>content model</em></li>
+<li>Supports server-driven content negotiation</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Demo: media type formatters</h1></header>
+                  
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Configuration</h1></header>
+                  
+                  
+                      <section><ul>
+<li>In prototyping phase</li>
+<li><code>HttpHostConfiguration</code> configuration builder<ul>
+<li>Fluent interface</li>
+</ul>
+</li>
+<li><code>HttpConfigurableServiceHost</code> service host</li>
+<li><code>RouteCollection</code> extension methods receiving the configuration</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Configuration</h1></header>
+                  
+                  
+                      <section><pre><div class="highlight"><pre style="line-height: 125%"><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1</span> var cfg = HttpHostConfiguration.Create()
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2</span>     .AddMessageHandlers(<span style="color: #008000; font-weight: bold">typeof</span> (SampleMessageHandler))
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3</span>     .SetOperationHandlerFactory(<span style="color: #008000; font-weight: bold">new</span> MyOperationConfigurationFactory());
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4</span> 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5</span> var host = <span style="color: #008000; font-weight: bold">new</span> HttpConfigurableServiceHost(..., cfg, ...){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6</span> 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">MyOperationConfigurationFactory</span> : HttpOperationHandlerFactory{
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8</span>     <span style="color: #008000; font-weight: bold">override</span> Collection&lt;HttpOperationHandler&gt; 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9</span>     OnCreateRequestHandlers(
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10</span>         ServiceEndpoint endpoint, 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11</span>         HttpOperationDescription operation){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12</span>         var coll = <span style="color: #008000; font-weight: bold">base</span>.OnCreateRequestHandlers(endpoint, operation);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13</span>         coll.Add(<span style="color: #008000; font-weight: bold">new</span> LoggingOperationHandler(operation));
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14</span>         <span style="color: #008000; font-weight: bold">if</span> (operation.Name == <span style="color: #BA2121">&quot;GetTimeString&quot;</span>)
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">15</span>         {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">16</span>             Formatters.Remove(Formatters.XmlFormatter);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">17</span>             Formatters.Remove(Formatters.JsonFormatter);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">18</span>             Formatters.Add(<span style="color: #008000; font-weight: bold">new</span> WaveFromTextFormatter());
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">19</span>             Formatters.Add(<span style="color: #008000; font-weight: bold">new</span> ImageFromTextFormatter());
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">20</span>         }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">21</span>         <span style="color: #008000; font-weight: bold">return</span> coll;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">22</span>     }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">23</span> }
+</pre></div>
+</pre></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Description</h1></header>
+                  
+                  
+                      <section><p><center><img src="description.2.png" height="80%" /></center></p></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Resources</h1></header>
+                  
+                  
+                      <section><ul>
+<li><a href="http://wcf.codeplex.com/">http://wcf.codeplex.com/</a>, namely the <a href="http://wcf.codeplex.com/SourceControl/list/changesets">source</a> and the <a href="http://wcf.codeplex.com/discussions">discussions</a></li>
+<li>Glenn Block's <a href="http://blogs.msdn.com/b/gblock/">blog</a> and <a href="http://channel9.msdn.com/Events/Speakers/glenn+block">videos</a></li>
+<li>My WCF Web API <a href="http://pfelix.wordpress.com/2011/04/19/wcf-web-apipreview-4/">post series</a></li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Q&amp;A</h1></header>
+                  
                   
               </div>
           </div>
