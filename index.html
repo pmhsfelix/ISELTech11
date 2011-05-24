@@ -503,7 +503,7 @@
 <li>No final release date yet</li>
 </ul>
 </li>
-<li>Interesting community envolvement<ul>
+<li>Community participation<ul>
 <li>Feedback</li>
 <li>However, no source code contribution</li>
 </ul>
@@ -715,6 +715,7 @@
                   
                   
                       <section><ul>
+<li>Similar to the original WCF model</li>
 <li>Self-hosting<ul>
 <li>New <code>HttpServiceHost</code></li>
 <li>New <code>HttpBinding</code></li>
@@ -762,6 +763,31 @@
           <div class="slide">
               <div class="inner">
                   
+                  <header><h1>Runtime Architecture</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Message Handlers<ul>
+<li>Receive a <code>HttpRequestMessage</code></li>
+<li>Must produce a <code>HttpResponseMessage</code> asynchronosly</li>
+<li>Contains a reference to an <em>inner channel</em></li>
+<li>Endpoint scoped</li>
+</ul>
+</li>
+<li>Operation Handlers<ul>
+<li>Receive <code>HttpParameter</code> sets</li>
+<li>Produce <code>HttpParameter</code> sets</li>
+<li>Operation scoped</li>
+</ul>
+</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
                   <header><h1>Message Handlers</h1></header>
                   
                   
@@ -777,7 +803,21 @@
                   <header><h1>Operation Handlers</h1></header>
                   
                   
-                      <section><p><center><img src="http://pfelix.files.wordpress.com/2011/04/operationhandlers.png" width="80%" /></center></p></section>
+                      <section><ul>
+<li>Operation Handlers<ul>
+<li>Use parameters from a <em>bag</em></li>
+<li>Contribute with parameters to the same <em>bag</em><br />
+</li>
+</ul>
+</li>
+<li>Initially this <em>bag</em> contains<ul>
+<li>The <code>HttpRequestMessage</code></li>
+<li>The matched <code>URITemplate</code> bound variables </li>
+</ul>
+</li>
+<li>The final <em>bag</em> contents are usable by the operation</li>
+</ul>
+<p><center><img src="http://pfelix.files.wordpress.com/2011/04/operationhandlers.png" width="80%" /></center></p></section>
                   
               </div>
           </div>
