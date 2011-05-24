@@ -1,77 +1,791 @@
 <!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  html5-slides-markdown Modifications: Adam Zapletal (adamzap@gmail.com)
+-->
 <html>
 <head>
-  <meta charset='utf-8'>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>An introduction to WCF Web API</title>
+    <style type="text/css" media="print">
+      * {
+          margin: 0;
+          padding: 0;
+      }
+      @page {
+          size: landscape;
+      }
+      body {
+          font: 100% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+          padding: 0;
+          margin: 0;
+      }
+      div.slide {
+          min-width: 800px;
+          min-height: 600px;
+          padding: 1em;
+          overflow: hidden;
+          page-break-after: always;
+          border: 1px solid black;
+          border-radius: 20px;
+      }
+      div.slide div.inner {
+          width: 800px;
+          height: 600px;
+          margin: auto;
+          display: table-cell;
+      }
+      h1 {
+          font-size: 2.4em;
+      }
+      h2 {
+          font-size: 1.4em;
+      }
+      h3 {
+          margin: 1em 0;
+      }
+      ul {
+          margin: 0;
+          padding: 0;
+      }
+      p, li, pre {
+          margin: 1em 0;
+      }
+      li {
+          margin-left: 2em;
+      }
+      a {
+          color: #000000;
+      }
+      pre, code {
+          max-width: 800px;
+          background: #eee;
+          font-family: Monaco, monospace;
+          font-size: 90%;
+      }
+      pre {
+          padding: .5em;
+          overflow: hidden;
+          border-radius: .8em;
+      }
+      code {
+          padding: 0 .2em;
+      }
+      .slide header:only-child h1 {
+        line-height: 180%;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        height: 600px;
+        width: 800px;
+        font-size: 48px;
+        margin-top:100px;
+        margin-bottom:100px;
+      }
+    </style>
+    <style type="text/css" media="screen, projection">
+        body {
+          font: 14px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+          background: #778;
+          padding: 0;
+          margin: 0;
+          overflow: hidden;
+        }
 
-  <title>pmhsfelix/ISELTech11 @ GitHub</title>
+        div.presentation {
+          position: absolute;
+          width: 100%;
+          display: table-cell;
+          vertical-align: middle;
+          height: 100%;
+          background: inherit;
+        }
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #d3ebee;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #2c1411; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #2c1411; }
-    h3 { text-align: center; color: #2c1411; }
-    a { color: #2c1411; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
+        div.slides {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          left: 0;
+          top: 0;
+          position: absolute;
+          display: block;
+          -webkit-transition: -webkit-transform 1s ease-in-out;
+          -moz-transition: -moz-transform 1s ease-in-out;
+          -o-transition: -o-transform 1s ease-in-out;
+        }
+
+        div.slide {
+          display: none;
+          position: absolute;
+          overflow: hidden;
+          width: 900px;
+          height: 700px;
+          left: 50%;
+          top: 50%;
+          margin-top: -350px;
+          background: -webkit-gradient(linear, left bottom, left top, from(#bbd), to(#fff));
+          -webkit-transition: margin 0.25s ease-in-out;
+          background-color: #eee;
+          background: -moz-linear-gradient(bottom, #bbd, #fff);
+          -moz-transition: margin 0.25s ease-in-out;
+          -o-transition: margin 0.25s ease-in-out;
+          border-top-left-radius: 20px;
+          -moz-border-radius-topleft: 20px;
+          -webkit-border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+          -moz-border-radius-topright: 20px;
+          -webkit-border-top-right-radius: 20px;
+          border-bottom-right-radius: 20px;
+          -moz-border-radius-bottomright: 20px;
+          -webkit-border-bottom-right-radius: 20px;
+          border-bottom-left-radius: 20px;
+          -moz-border-radius-bottomleft: 20px;
+          -webkit-border-bottom-left-radius: 20px;
+        }
+
+        div.slide p {
+          font-size: 20px;
+        }
+
+        .slide.far-past {
+          display: block;
+          margin-left: -2400px;
+        }
+
+        .slide.past {
+          display: block;
+          margin-left: -1400px;
+        }
+
+        .slide.current {
+          display: block;
+          margin-left: -450px;
+        }
+
+        .slide.future {
+          display: block;
+          margin-left: 500px;
+        }
+
+        .slide.far-future {
+          display: block;
+          margin-left: 1500px;
+        }
+
+        body.three-d div.slides {
+          -webkit-transform: translateX(50px) scale(0.8) rotateY(10deg);
+          -moz-transform: translateX(50px) scale(0.8) rotateY(10deg);
+          -o-transform: translateX(50px) scale(0.8) rotateY(10deg);
+        }
+
+
+        /* Content */
+
+        header:not(:only-child) {
+          font-family: 'Lucida Grande';
+          font-weight: normal;
+          font-size: 50px;
+          letter-spacing: -.05em;
+          color: white;
+          color: black;
+          text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+          position: absolute;
+          left: 30px;
+          top: 25px;
+          margin: 0;
+          padding: 0;
+        }
+
+        h1 {
+          display: inline;
+          font-size: 100%;
+          font-weight: normal;
+          padding: 0;
+          margin: 0;
+        }
+
+        h2 {
+          font-family: 'Lucida Grande';
+          color: black;
+          font-size: 2em;
+          margin-left: 20px;
+          margin-top: 50px;
+        }
+
+        h2:first-child {
+          margin-top: 0;
+        }
+
+        section, .slide header:only-child h1 {
+          font-family: 'Lucida Grande';
+          color: #3f3f3f;
+          text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+          margin-left: 30px;
+          margin-right: 30px;
+          margin-top: 100px;
+          display: block;
+          overflow: hidden;
+        }
+
+        a {
+          color: inherit;
+          display: inline-block;
+          text-decoration: none;
+          line-height: 110%;
+          border-bottom: 2px solid #3f3f3f;
+        }
+
+        h2 {
+          padding: 0;
+          margin: 15px 0 5px 0;
+        }
+
+        pre {
+          font-size: 20px;
+          font-family: Monaco, Courier, monospace;
+        }
+
+        li {
+          padding: 10px 0;
+          font-size: 32px;
+        }
+
+        .slide header:only-child h1 {
+          line-height: 180%;
+          text-align: center;
+          display: table-cell;
+          vertical-align: middle;
+          height: 700px;
+          width: 900px;
+          font-size: 50px;
+          margin-top:100px;
+          margin-bottom:100px;
+        }
+    </style>
+    <script>
+        function main() {
+          // Since we don't have the fallback of attachEvent and
+          // other IE only stuff we won't try to run JS for IE.
+          // It will run though when using Google Chrome Frame
+		  
+          //if (document.all) { return; } PF
+
+          var currentSlideNo;
+          var notesOn = false;
+          var slides = document.getElementsByClassName('slide');
+          var touchStartX = 0;
+
+          // var slide_hash = window.location.hash.replace(/#/, '');
+          // if (slide_hash) {
+          //   for (var i = 0, len = slides.length; i < len; i++) {
+          //     if (slides[i].id == slide_hash) {
+          //       currentSlideNo = i;
+          //       updateSlideClasses();
+          //     }
+          //   }
+          // }
+
+          var spaces = /\s+/, a1 = [""];
+
+          var str2array = function(s) {
+            if (typeof s == "string" || s instanceof String) {
+              if (s.indexOf(" ") < 0) {
+                a1[0] = s;
+                return a1;
+              } else {
+                return s.split(spaces);
+              }
+            }
+            return s;
+          };
+
+          var trim = function(str) {
+            return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+          };
+
+          var addClass = function(node, classStr) {
+            classStr = str2array(classStr);
+            var cls = " " + node.className + " ";
+            for (var i = 0, len = classStr.length, c; i < len; ++i) {
+              c = classStr[i];
+              if (c && cls.indexOf(" " + c + " ") < 0) {
+                cls += c + " ";
+              }
+            }
+            node.className = trim(cls);
+          };
+
+          var removeClass = function(node, classStr) {
+            var cls;
+            if (classStr !== undefined) {
+              classStr = str2array(classStr);
+              cls = " " + node.className + " ";
+              for (var i = 0, len = classStr.length; i < len; ++i) {
+                cls = cls.replace(" " + classStr[i] + " ", " ");
+              }
+              cls = trim(cls);
+            } else {
+              cls = "";
+            }
+            if (node.className != cls) {
+              node.className = cls;
+            }
+          };
+
+          var getSlideEl = function(slideNo) {
+            if (slideNo > 0) {
+              return slides[slideNo - 1];
+            } else {
+              return null;
+            }
+          };
+
+          var getSlideTitle = function(slideNo) {
+            var el = getSlideEl(slideNo);
+
+            if (el) {
+              return el.getElementsByTagName('header')[0].innerHTML;
+            } else {
+              return null;
+            }
+          };
+
+          var changeSlideElClass = function(slideNo, className) {
+            var el = getSlideEl(slideNo);
+
+            if (el) {
+              removeClass(el, 'far-past past current future far-future');
+              addClass(el, className);
+            }
+          };
+
+          var updateSlideClasses = function() {
+            window.location.hash = "slide" + currentSlideNo;
+            changeSlideElClass(currentSlideNo - 2, 'far-past');
+            changeSlideElClass(currentSlideNo - 1, 'past');
+            changeSlideElClass(currentSlideNo, 'current');
+            changeSlideElClass(currentSlideNo + 1, 'future');
+            changeSlideElClass(currentSlideNo + 2, 'far-future');
+          };
+
+          var nextSlide = function() {
+            if (currentSlideNo < slides.length) {
+              currentSlideNo++;
+            }
+
+            updateSlideClasses();
+          };
+
+          var prevSlide = function() {
+            if (currentSlideNo > 1) {
+              currentSlideNo--;
+            }
+            updateSlideClasses();
+          };
+
+          var showNotes = function() {
+            var notes = document.querySelectorAll('.notes');
+            for (var i = 0, len = notes.length; i < len; i++) {
+              notes[i].style.display = (notesOn) ? 'none':'block';
+            }
+            notesOn = (notesOn) ? false:true;
+          };
+
+          var switch3D = function() {
+            if (document.body.className.indexOf('three-d') == -1) {
+              document.getElementsByClassName('presentation')[0].style.webkitPerspective = '1000px';
+              document.body.className += ' three-d';
+            } else {
+              window.setTimeout("document.getElementsByClassName('presentation')[0].style.webkitPerspective = '0';", 2000);
+              document.body.className = document.body.className.replace(/three-d/, '');
+            }
+          };
+
+          var handleBodyKeyDown = function(event) {
+            // console.log(event.keyCode);
+            switch (event.keyCode) {
+              case 37: // left arrow
+                prevSlide();
+                break;
+              case 39: // right arrow
+              // case 32: // space
+                nextSlide();
+                break;
+              case 50: // 2
+                showNotes();
+                break;
+              case 51: // 3
+                switch3D();
+                break;
+            }
+          };
+
+          var addTouchListeners = function() {
+            document.addEventListener('touchstart', function(e) {
+              touchStartX = e.touches[0].pageX;
+            }, false);
+            document.addEventListener('touchend', function(e) {
+              var pixelsMoved = touchStartX - e.changedTouches[0].pageX;
+              var SWIPE_SIZE = 150;
+              if (pixelsMoved > SWIPE_SIZE) {
+                nextSlide();
+              }
+              else if (pixelsMoved < -SWIPE_SIZE) {
+               prevSlide();
+              }
+            }, false);
+          };
+
+          // initialize
+
+          (function() {
+            if (window.location.hash != "") {
+              currentSlideNo = Number(window.location.hash.replace('#slide', ''));
+            } else {
+              currentSlideNo = 1;
+            }
+
+            document.addEventListener('keydown', handleBodyKeyDown, false);
+
+            var els = slides;
+            for (var i = 0, el; el = els[i]; i++) {
+              addClass(el, 'slide far-future');
+            }
+            updateSlideClasses();
+
+            // add support for finger events (filter it by property detection?)
+            addTouchListeners();
+          })();
+        };
+    </script>
 </head>
-
 <body>
-  <a href="http://github.com/pmhsfelix/ISELTech11"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/pmhsfelix/ISELTech11/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/pmhsfelix/ISELTech11/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+    <div class="presentation">
+      <div class="slides">
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>An introduction to WCF Web API</h1></header>
+                  
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Introduction</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Extension to the <em>Windows Communication Foundation</em></li>
+<li>Announced on the 2010 PDC<ul>
+<li>Work in progress - currently in <em>Preview 4</em></li>
+<li>No final release date yet</li>
+</ul>
+</li>
+<li>Interesting community envolvement<ul>
+<li>Feedback</li>
+<li>However, no source code contribution</li>
+</ul>
+</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Goals</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Development of web APIs, characterized by<ul>
+<li>Usage of HTTP as the application protocol (no SOAP)</li>
+<li>Usage of multiple media types</li>
+<li>Usage of multiple formats (e.g. XML, JSON)</li>
+<li>Multiple architectural styles (e.g. RPC and ReST) </li>
+</ul>
+</li>
+<li><em>Base</em> for ReST style system<ul>
+<li>Not "opinionated"</li>
+<li>No resource model <em>yet</em></li>
+</ul>
+</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Availability</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Source available at <a href="http://wcf.codeplex.com">wcf.codeplex.com</a><ul>
+<li><code>hg clone https://hg01.codeplex.com/wcf</code><br />
+</li>
+</ul>
+</li>
+<li>Nuget package<ul>
+<li><code>Install-Package WebApi.All</code></li>
+</ul>
+</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Programming Model</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Original WCF programming model<ul>
+<li>Based on the SOAP/WSDL model</li>
+<li>Transport independence</li>
+<li>HTTP is a transport <em>detail</em><br />
+</li>
+</ul>
+</li>
+<li>Web API programming model<ul>
+<li>Based on the HTTP model <br />
+</li>
+<li>HTTP used as the <em>application level</em> protocol</li>
+<li>HTTP exposed in its "full glory"</li>
+<li>Adds on the original model</li>
+</ul>
+</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>The Service Class</h1></header>
+                  
+                  
+                      <section><pre><div class="highlight"><pre style="line-height: 125%"><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1</span> <span style="color: #7D9029">[ServiceContract]</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">TheService</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3</span> {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4</span> <span style="color: #7D9029">    [WebGet(UriTemplate = &quot;time&quot;)]</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5</span>     HttpResponseMessage <span style="color: #0000FF">TheOperation</span>(HttpRequestMessage req)
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6</span>     {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7</span>         <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">new</span> <span style="color: #0000FF">HttpResponseMessage</span>()
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8</span>         {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9</span>             StatusCode = HttpStatusCode.OK,
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10</span>             Content = <span style="color: #008000; font-weight: bold">new</span> StringContent(
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11</span>                 DateTime.Now.ToLongTimeString())
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12</span>         };
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13</span>     }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14</span> }
+</pre></div>
+</pre></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>The Service Host</h1></header>
+                  
+                  
+                      <section><pre><div class="highlight"><pre style="line-height: 125%"><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">Program</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2</span> {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3</span>     <span style="color: #008000; font-weight: bold">static</span> <span style="color: #008000; font-weight: bold">void</span> <span style="color: #0000FF">Main</span>(<span style="color: #B00040">string</span>[] args)
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4</span>     {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5</span>         <span style="color: #008000; font-weight: bold">using</span> (var host = <span style="color: #008000; font-weight: bold">new</span> HttpServiceHost(<span style="color: #008000; font-weight: bold">typeof</span>(TheService), 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6</span>             <span style="color: #BA2121">&quot;http://localhost:8080&quot;</span>))
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7</span>         {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8</span>             host.Open();
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9</span>             Console.WriteLine(<span style="color: #BA2121">&quot;Host opened at {0} , press any key to end&quot;</span>, 
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10</span>                 host.Description.Endpoints[<span style="color: #666666">0</span>].Address);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11</span>             Console.ReadKey();
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">12</span>         }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">13</span>     }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">14</span> }
+</pre></div>
+</pre></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Programming Model</h1></header>
+                  
+                  
+                      <section><ul>
+<li><code>ServiceContract</code> is just a container for operations</li>
+<li>Operations are instance methods annotated with<ul>
+<li><code>WebGet[UriTemplate="..."]</code>, or</li>
+<li><code>WebInvoke[UriTemplate="...", Method="..."]</code> </li>
+</ul>
+</li>
+<li>Operations handle HTTP requests selected by<ul>
+<li>The HTTP method (e.g. GET, POST)</li>
+<li>The match between the Request URI and the URI template</li>
+</ul>
+</li>
+<li><em>Contract</em> is a legacy term</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Operation Parameters</h1></header>
+                  
+                  
+                      <section><ul>
+<li><code>HttpRequestMessage</code></li>
+<li><code>HttpRequestMessage&lt;T&gt;</code></li>
+<li>URI template match bound variables<ul>
+<li>E.g. <code>UriTemplate = "time/{zone}"</code></li>
+</ul>
+</li>
+<li>Query string pairs</li>
+<li>A <em>content model</em></li>
+<li>Parameters <em>injected</em> by <em>operation handlers</em></li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Operation return</h1></header>
+                  
+                  
+                      <section><ul>
+<li><code>HttpResponseMessage</code></li>
+<li><code>HttpRespondeMessage&lt;T&gt;</code></li>
+<li>A <em>content model</em></li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>HTTP messages</h1></header>
+                  
+                  
+                      <section><p><center><img src="http://pfelix.files.wordpress.com/2011/04/httpmessages.png" height="80%" /></center></p></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Hosting</h1></header>
+                  
+                  
+                      <section><ul>
+<li>Self-hosting<ul>
+<li>New <code>HttpServiceHost</code></li>
+<li>New <code>HttpBinding</code></li>
+</ul>
+</li>
+<li>IIS hosting<ul>
+<li><code>RouteCollection</code> extension methods</li>
+</ul>
+</li>
+</ul></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>IIS Hosting</h1></header>
+                  
+                  
+                      <section><pre><div class="highlight"><pre style="line-height: 125%"><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1</span> <span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">Global</span> : System.Web.HttpApplication
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2</span> {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3</span>     <span style="color: #008000; font-weight: bold">protected</span> <span style="color: #008000; font-weight: bold">void</span> <span style="color: #0000FF">Application_Start</span>(<span style="color: #B00040">object</span> sender, EventArgs e)
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4</span>     {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5</span>         RouteTable.Routes.MapServiceRoute&lt;TodoResource&gt;(<span style="color: #BA2121">&quot;todos&quot;</span>);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6</span>     }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7</span> }
+</pre></div>
+</pre></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Runtime Architecture</h1></header>
+                  
+                  
+                      <section><p><center><img src="http://pfelix.files.wordpress.com/2011/04/runtime2.png" height="80%" /></center></p></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Message Handlers</h1></header>
+                  
+                  
+                      <section><p><center><img src="http://pfelix.files.wordpress.com/2011/04/messagehandler-passthrough.png" height="40%" /></center>
+<center><img src="http://pfelix.files.wordpress.com/2011/04/messagehandler-stop_.png" height="40%" /></center></p></section>
+                  
+              </div>
+          </div>
+        
+          <div class="slide">
+              <div class="inner">
+                  
+                  <header><h1>Operation Handlers</h1></header>
+                  
+                  
+                      <section><p><center><img src="http://pfelix.files.wordpress.com/2011/04/operationhandlers.png" width="80%" /></center></p></section>
+                  
+              </div>
+          </div>
+        
+      </div>
     </div>
-
-    <h1><a href="http://github.com/pmhsfelix/ISELTech11">ISELTech11</a>
-      <span class="small">by <a href="http://github.com/pmhsfelix">pmhsfelix</a></span></h1>
-
-    <div class="description">
-      Presentation given at the 2011 ISEL Tech event
-    </div>
-
-    <h2>Authors</h2>
-<p>Pedro Felix (pmhsfelix@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Pedro Felix (pmhsfelix@gmail.com)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/pmhsfelix/ISELTech11/zipball/master">zip</a> or
-      <a href="http://github.com/pmhsfelix/ISELTech11/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/pmhsfelix/ISELTech11</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/pmhsfelix/ISELTech11">pmhsfelix/ISELTech11</a>
-    </div>
-
-  </div>
-
-  
+    <script>
+        main()
+    </script>
 </body>
 </html>
